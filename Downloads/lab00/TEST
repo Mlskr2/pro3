@@ -1,0 +1,336 @@
+import org.junit.jupiter.api.Test;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+
+public class ArrayDequeTest {
+    @Test
+    public void addFirstTest(){
+        Deque<Integer> ar = new ArrayDeque<>();
+        ar.addFirst(1);
+        ar.addFirst(2);
+        assertEquals((int)(ar.get(0)),2);
+    }
+    @Test
+    public void addLastTest() {
+        Deque<Integer> ar = new ArrayDeque<>();
+        ar.addLast(1);
+        ar.addLast(2);
+        assertEquals((int)(ar.get(0)),1);
+    }
+    @Test
+    public void removelast(){
+        Deque<Integer> ar = new ArrayDeque<>();
+        ar.addLast(1);
+        ar.addLast(2);
+        ar.addLast(3);
+        ar.removeLast();
+        assertEquals((int)(ar.get(1)),2);
+    }
+
+
+    @Test
+    public void addFirstTest2() {
+        Deque<Integer> ak = new ArrayDeque<>();
+        ak.addFirst(1);
+        ak.addFirst(2);
+        assertThat(ak.toList()).containsExactly(2, 1).inOrder();
+        ak.addFirst(3);
+        ak.addFirst(4);
+        ak.addFirst(5);
+        ak.addFirst(7);
+        ak.addFirst(8);
+        assertThat(ak.toList()).containsExactly(8,7,5,4,3,2,1).inOrder();
+
+
+    }
+
+    @Test
+    public void addLastTest2() {
+        Deque<Integer> arr = new ArrayDeque<>();
+
+        arr.addLast(1);
+        arr.addLast(3);
+        arr.addLast(3);
+        assertThat(arr.toList()).containsExactly(1, 3, 3).inOrder();
+    }
+
+
+    @Test
+
+    public void addFirstAndAddLastTest() {
+        Deque<Integer> jk = new ArrayDeque<>();
+
+         /* I've decided to add in comments the state after each call for the convenience of the
+            person reading this test. Some programmers might consider this excessively verbose. */
+        jk.addLast(0);
+        jk.addLast(1);
+        jk.addFirst(-1);
+        jk.addLast(2);
+        jk.addFirst(5);
+        jk.addFirst(6);
+
+        assertThat(jk.toList()).containsExactly(6, 5, -1, 0, 1, 2).inOrder();
+    }
+
+
+
+
+    @Test
+    public void testSize() {
+        Deque<Integer> jk = new ArrayDeque<>();
+        assertTrue(jk.size() == 0);
+        jk.addLast(1);
+        assertTrue(jk.size() == 1);
+        jk.removeLast();
+        assertTrue(jk.size()==0);
+        jk.removeFirst();
+        assertTrue(jk.size()==0);
+
+    }
+    @Test
+    public void testIsEmpty() {
+        Deque<Integer> jk = new ArrayDeque<>();
+        assertTrue(jk.isEmpty());
+        jk.addLast(1);
+        assertFalse(jk.isEmpty());
+    }
+
+
+    @Test
+    public void testRemoveFirst() {
+        Deque<Integer> arr = new ArrayDeque<>();
+         /* I've decided to add in comments the state after each call for the convenience of the
+            person reading this test. Some programmers might consider this excessively verbose. */
+        arr.addLast(0);
+        arr.addLast(1);
+        arr.addFirst(-1);
+        arr.addLast(2); //[-1,0,1,2]
+        arr.removeFirst();
+        assertThat(arr.toList()).containsExactly(  0, 1, 2).inOrder();
+        arr.removeFirst();
+        assertThat(arr.toList()).containsExactly(1,2).inOrder();
+        int remove1=arr.removeFirst();
+        assertThat(remove1).isEqualTo(1);
+        int remove2=arr.removeFirst();
+        assertThat(remove2).isEqualTo(2);
+        assertThat(arr.toList()).isEmpty();
+        assertNull(arr.removeFirst());
+        arr.addFirst(2);
+        assertThat(arr.toList()).containsExactly(2).inOrder();
+
+
+    }
+    @Test
+    public void testGet() {
+        Deque<Integer> jk = new ArrayDeque<>();
+        assertNull(jk.get(0));
+        jk.addFirst(4);
+        jk.addFirst(2);
+        int actual = jk.get(0);
+        assertEquals(actual, 2);
+        assertNull(jk.get(33333));
+        assertNull(jk.get(-1));
+        assertNull(jk.get(5));
+    }
+    @Test
+    public void testRemoveLast() {
+        Deque<Integer> jk = new ArrayDeque<>();
+        jk.addLast(0);
+        jk.addLast(1);
+        jk.addFirst(-1);
+        jk.addLast(2); //[-1,0,1,2]
+        jk.removeLast();
+        assertThat(jk.toList()).containsExactly(  -1,0,1).inOrder();
+        jk.removeLast();
+        int remove1=jk.removeLast();
+        assertThat(remove1).isEqualTo(0);
+        int remove2=jk.removeLast();
+        assertThat(remove2).isEqualTo(-1);
+        assertThat(jk.toList()).isEmpty();
+        assertNull(jk.removeLast());
+        jk.addLast(2);
+        assertThat(jk.toList()).contains(2);
+
+    }
+    @Test
+    public void testRemoveFL(){
+        Deque<Integer> jk = new ArrayDeque<>();
+        jk.addLast(0);
+        jk.addLast(1);
+        jk.addFirst(-1);
+        jk.addLast(2);
+        jk.addFirst(-2); // [-2,-1,0,1,2]
+        jk.removeLast();
+        jk.removeFirst();
+        assertThat(jk.toList()).containsExactly( -1,0,1).inOrder();
+        jk.removeLast();
+        assertThat(jk.toList()).containsExactly(  -1,0).inOrder();
+        jk.removeLast();
+        jk.removeFirst();
+        assertThat(jk.toList()).isEmpty();
+        assertNull(jk.removeFirst());
+    }
+    @Test
+    public void testRemoveTrigger(){
+        Deque<Integer> arr = new ArrayDeque<>();
+        arr.addLast(0);
+        arr.addLast(1);
+        arr.addFirst(-1);
+        arr.addLast(2);
+        arr.addFirst(-2); // [-2,-1,0,1,2]
+        arr.addFirst(6);
+        arr.addFirst(7);
+        arr.addFirst(3);
+        arr.addFirst(7);
+        arr.addFirst(8);
+        arr.addFirst(6);
+        arr.addFirst(6);
+        arr.addFirst(2);
+        arr.addFirst(6);
+        arr.addFirst(-5);
+        arr.removeFirst();
+        arr.removeFirst();
+        arr.removeFirst();
+        arr.removeFirst();
+        arr.removeFirst();
+        arr.removeFirst();
+        arr.removeFirst();
+        arr.removeFirst();
+        arr.removeFirst();
+        arr.removeFirst();
+        arr.removeFirst();
+        assertThat(arr.toList()).containsExactly( -1,0,1,2).inOrder();
+    }
+
+    @Test
+    public void OneRemoveFirst() {
+        Deque<Integer> jk = new ArrayDeque<>();
+         /* I've decided to add in comments the state after each call for the convenience of the
+            person reading this test. Some programmers might consider this excessively verbose. */
+        jk.addLast(0);
+        jk.addLast(1);
+        jk.addFirst(-1);
+        jk.addLast(2); //[-1,0,1,2]
+        jk.removeFirst();
+        assertThat(jk.toList()).containsExactly(  0, 1, 2).inOrder();
+        jk.removeFirst();
+        jk.removeFirst();
+        int RV=jk.removeFirst();
+        assertThat(RV).isEqualTo(2);
+        assertThat(jk.removeFirst()).isEqualTo(null);
+        assertThat(jk.toList()).isEmpty();
+        assertNull(jk.removeFirst());
+        jk.addFirst(2);
+        assertThat(jk.toList()).containsExactly(2).inOrder();
+        jk.addFirst(2);
+        jk.addFirst(3);
+        int RT=jk.removeFirst();
+        assertThat(RT).isEqualTo(3);
+    }
+    @Test
+    public void resizeRemovef() {
+        Deque<Integer> jk = new ArrayDeque<>();
+        jk.addLast(0);
+        jk.addLast(1);
+        jk.addFirst(-1);
+        jk.addLast(2);
+        jk.addFirst(-2); // [-2,-1,0,1,2]
+        jk.addFirst(6);
+        jk.addFirst(7);
+        jk.addFirst(6);
+        jk.addFirst(9);
+        jk.removeFirst();
+        jk.removeFirst();
+        jk.removeFirst();
+        jk.removeFirst();
+        jk.removeFirst();
+        jk.removeFirst();
+        int removeN = jk.removeFirst();
+        assertThat(removeN).isEqualTo(0);
+        int removeN2 = jk.removeFirst();
+        assertThat(removeN2).isEqualTo(1);
+        jk.removeFirst();
+    }
+    @Test
+    public void resizer2(){
+        Deque<Integer> jk = new ArrayDeque<>();
+        jk.addLast(-1);
+        jk.addLast(3);
+        jk.addFirst(2);
+        jk.addLast(2);
+        jk.addFirst(7);
+        jk.addFirst(7);
+        jk.removeFirst();// [-2,-1,0,1,2]
+        jk.addFirst(6);
+        jk.addFirst(4);
+        jk.addFirst(3);
+        jk.addFirst(9);
+        jk.removeLast();
+        jk.removeLast();
+        jk.removeLast();
+        jk.removeLast();
+        jk.removeLast();
+        jk.removeLast();
+        int removeN=jk.removeLast();
+        assertThat(removeN).isEqualTo(4);
+        int removeN2=jk.removeLast();
+        assertThat(removeN2).isEqualTo(3);
+        jk.removeLast();
+        assertNull(jk.removeFirst());
+    }
+
+    @Test
+    public void resizer3(){
+        Deque<Integer> jk = new ArrayDeque<>();
+        jk.addFirst(0);
+        jk.get(0);
+        jk.addFirst(2);
+        jk.get(0) ;
+        jk.addLast(4);
+        jk.addFirst(5);
+        jk.removeFirst()   ;
+        jk.removeLast()      ;
+        jk.removeFirst()    ;
+        jk.addLast(9);
+        jk.removeLast()  ;
+        jk.addFirst(11);
+        jk.removeLast();
+        jk.removeLast();
+        assertNull(jk.removeLast());
+    }
+    @Test
+    public void resizer4(){
+        Deque<Integer> jk = new ArrayDeque<>();
+        jk.addLast(0);
+        jk.removeLast();
+        jk.addFirst(2);
+        jk.addFirst(3);
+        jk.removeFirst()  ;
+        jk.addFirst(5);
+        jk.removeFirst()  ;
+        jk.removeLast()    ;
+        jk.addLast(8);
+        jk.addFirst(9);
+        jk.removeLast();
+        jk.removeLast();
+        jk.addLast(12);
+        jk.addLast(12);
+        jk.addLast(12);
+        jk.addLast(12);
+        jk.addLast(12);
+        jk.addLast(12);
+        jk.addLast(12);
+        jk.addLast(12);
+        jk.addLast(12);
+        jk.addLast(12);
+        jk.addLast(12);
+        assertEquals((jk.size()),11);
+
+    }
+
+
+    }
